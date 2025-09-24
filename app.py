@@ -12,7 +12,7 @@ app = Flask(__name__)
 # --- Database Configuration ---
 # These will be set from environment variables on your hosting platform (e.g., Render)
 DB_HOST = os.environ.get('RDS_HOSTNAME')
-DB_USER = os.environ.get('RDS_USERNAME'),
+DB_USER = os.environ.get('RDS_USERNAME')
 DB_PASSWORD = os.environ.get('RDS_PASSWORD')
 DB_NAME = os.environ.get('RDS_DB_NAME')
 
