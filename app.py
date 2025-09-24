@@ -9,6 +9,8 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# i add new code
+
 # --- Database Configuration ---
 # These will be set from environment variables on your hosting platform (e.g., Render)
 DB_HOST = os.environ.get('RDS_HOSTNAME')
