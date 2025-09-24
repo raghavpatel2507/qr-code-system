@@ -17,7 +17,6 @@ DB_HOST = os.environ.get('RDS_HOSTNAME')
 DB_USER = os.environ.get('RDS_USERNAME')
 DB_PASSWORD = os.environ.get('RDS_PASSWORD')
 DB_NAME = os.environ.get('RDS_DB_NAME')
-db_port = 24059
 
 def create_db_connection():
     """Create a database connection to the AWS RDS MySQL database."""
@@ -32,7 +31,7 @@ def create_db_connection():
 
     try:
         # Get port and convert to integer, defaulting to 3306
-        db_port = int(os.environ.get('RDS_PORT', 3306))
+        db_port = int(os.environ.get('RDS_PORT', 24059))
 
         conn = mysql.connector.connect(
             host=DB_HOST,
