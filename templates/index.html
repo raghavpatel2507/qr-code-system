@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Status</title>
+    <style>
+        /* General Reset & Kiosk Styling */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000; /* Black background for high contrast */
+            overflow: hidden; /* Hide scrollbars */
+            cursor: none; /* Hide the mouse cursor */
+        }
+
+        /* Centering Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        /* Visually Hidden Input Field */
+        .hidden-form {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        /* Giant Result Text */
+        .result {
+            font-size: 25vw; /* Responsive font size based on viewport width */
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        /* Status Colors */
+        .valid {
+            color: #00ff7f; /* Bright Green */
+        }
+        .invalid {
+            color: #ff4136; /* Bright Red */
+        }
+        .waiting {
+            color: #007bff; /* Blue for initial state */
+            font-size: 15vw;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        {% if result %}
+            <div class="result {{ 'valid' if result == 'Valid' else 'invalid' }}">
+                {{ result }}
+            </div>
+        {% else %}
+            <div class="result waiting">
+                Scan Code
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- The form is now hidden but functional for the QR scanner -->
+    <div class="hidden-form">
+        <form action="/" method="post">
+            <input type="text" name="barcode" required autofocus>
+            <input type="submit">
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const barcodeInput = document.querySelector('input[name="barcode"]');
+            let typingTimer;
+            const doneTypingInterval = 150; 
+
+            // Automatically submit the form after a scan is complete
+            const submitForm = () => {
+                if (barcodeInput.value.trim().length > 0) {
+                    form.submit();
+                }
+            };
+
+            barcodeInput.addEventListener('input', () => {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(submitForm, doneTypingInterval);
+            });
+            
+            // This function ensures the hidden input field is always focused
+            const keepFocus = () => {
+                barcodeInput.focus();
+            };
+
+            // Set initial focus and refocus whenever the user interacts with the page
+            keepFocus();
+            document.body.addEventListener('click', keepFocus);
+        });
+    </script>
+</body>
+</html>
