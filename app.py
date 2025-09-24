@@ -17,6 +17,7 @@ DB_HOST = os.environ.get('RDS_HOSTNAME')
 DB_USER = os.environ.get('RDS_USERNAME')
 DB_PASSWORD = os.environ.get('RDS_PASSWORD')
 DB_NAME = os.environ.get('RDS_DB_NAME')
+db_port = 24059
 
 def create_db_connection():
     """Create a database connection to the AWS RDS MySQL database."""
@@ -38,7 +39,8 @@ def create_db_connection():
             user=DB_USER,
             password=DB_PASSWORD,
             database=DB_NAME,
-            port=db_port
+            port=db_port,
+            connection_timeout=5  # Add a 5-second connection timeout
         )
         return conn
     except ValueError:
